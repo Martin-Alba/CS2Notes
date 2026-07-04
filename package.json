@@ -10,6 +10,9 @@
     "db:seed": "tsx prisma/seed.ts",
     "vercel-build": "prisma generate && next build"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@prisma/engines", "prisma", "esbuild", "@swc/core", "@parcel/watcher"]
+  },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
