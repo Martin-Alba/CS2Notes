@@ -40,14 +40,14 @@ export async function sendEmail({ to, subject, html, text }: SendEmailParams): P
   }
 
   const info = await transport.sendMail({
-    from: `"CS2 Error Notes" <${from}>`,
+    from: `"CS2 Notes" <${from}>`,
     to,
     subject,
     html,
     text: text ?? html.replace(/<[^>]+>/g, ""),
     headers: {
       "List-Unsubscribe": `<mailto:${from}>`,
-      "X-Mailer": "CS2 Error Notes",
+      "X-Mailer": "CS2 Notes",
       "X-Priority": "3",
     },
   });
@@ -69,7 +69,7 @@ export function renderEmailTemplate({ title, body }: { title: string; body: stri
 </head>
 <body>
 <div class="container">
-  <div class="logo">CS2 Error Notes</div>
+  <div class="logo">CS2 Notes</div>
   <h1>${title}</h1>
   ${body}
 </div>

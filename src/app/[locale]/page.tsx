@@ -20,7 +20,7 @@ async function SignedOutView() {
     <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
       <h1 className="text-4xl font-bold">{t("appName")}</h1>
       <p className="text-zinc-400">
-        Track your CS2 mistakes, improve your game.
+        {t("description")}
       </p>
       <div className="flex gap-3">
         <Link

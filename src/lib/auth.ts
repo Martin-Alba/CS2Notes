@@ -15,7 +15,7 @@ export const auth = betterAuth({
     sendResetPassword: async ({ user, url }) => {
       await sendEmail({
         to: user.email,
-        subject: "Reset your password — CS2 Error Notes",
+        subject: "Reset your password — CS2 Notes",
         html: renderEmailTemplate({
           title: "Reset your password",
           body: `<p>We received a request to reset your password. Use the link below to choose a new one. This link expires in 1 hour.</p>
@@ -29,7 +29,7 @@ export const auth = betterAuth({
     sendVerificationEmail: async ({ user, url }) => {
       await sendEmail({
         to: user.email,
-        subject: "Verify your email — CS2 Error Notes",
+        subject: "Verify your email — CS2 Notes",
         html: renderEmailTemplate({
           title: "Verify your email",
           body: `<p>Thanks for signing up! Use the link below to confirm your email address and activate your account.</p>

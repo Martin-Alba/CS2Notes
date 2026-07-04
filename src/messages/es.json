@@ -1,6 +1,7 @@
 {
   "common": {
-    "appName": "CS2 Error Notes",
+    "appName": "CS2 Notes",
+    "description": "Sigue cada ronda, mejora tu juego.",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
     "signOut": "Cerrar sesión",
