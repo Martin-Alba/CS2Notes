@@ -15,8 +15,15 @@ const oswald = Oswald({
 });
 
 export const metadata: Metadata = {
-  title: "CS2 Error Notes",
+  title: {
+    default: "CS2 Notes",
+    template: "%s - CS2 Notes",
+  },
   description: "Track your CS2 mistakes, improve your game.",
+  icons: {
+    icon: "/cs2n.png",
+    apple: "/cs2n.png",
+  },
 };
 
 export default function RootLayout({
