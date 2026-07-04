@@ -1,0 +1,226 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TagType {
+  PREDEFINED
+  CUSTOM
+}
+
+enum ResourceType {
+  GROUP
+  MATCH
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NoteType {
+  ERROR
+  HIT
+}
+
+enum NotificationType {
+  ACCESS_REQUEST
+  ACCESS_APPROVED
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
+  groups        Group[]
+  customTags    Tag[]
+  shareLinks    ShareLink[]
+  notifications Notification[]
+  accessRequests AccessRequest[]
+  notes          Note[]
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                    String   @id
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Group {
+  id          String   @id
+  name        String
+  description String?
+  ownerId     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  owner   User    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  matches Match[]
+}
+
+model Match {
+  id        String   @id
+  groupId   String
+  mapName   String
+  title     String
+  soloQ     Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group  Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  rounds Round[]
+
+  @@index([groupId])
+  @@index([mapName])
+  @@index([soloQ])
+  @@index([createdAt])
+  @@index([groupId, createdAt])
+}
+
+model Round {
+  id          String   @id
+  matchId     String
+  roundNumber Int
+  createdAt   DateTime @default(now())
+
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  notes Note[]
+
+  @@index([matchId])
+}
+
+model Note {
+  id        String   @id
+  roundId   String
+  userId    String
+  content   String
+  severity  Int
+  type      NoteType @default(ERROR)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  round      Round          @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  errorTags  ErrorNoteTag[]
+
+  @@index([userId])
+  @@index([roundId])
+  @@index([type])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@index([userId, type, createdAt])
+}
+
+model Tag {
+  id     String  @id
+  name   String
+  type   TagType
+  userId String?
+
+  user       User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  errorNotes ErrorNoteTag[]
+
+  @@index([userId, type])
+}
+
+model ErrorNoteTag {
+  noteId String
+  tagId  String
+
+  note Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([noteId, tagId])
+  @@index([tagId])
+}
+
+model ShareLink {
+  id           String       @id
+  token        String       @unique
+  resourceType ResourceType
+  resourceId   String
+  createdById  String
+  createdAt    DateTime     @default(now())
+
+  createdBy      User            @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  accessRequests AccessRequest[]
+
+  @@index([createdById])
+  @@index([resourceType, resourceId])
+}
+
+model AccessRequest {
+  id          String        @id
+  shareLinkId String
+  requesterId String
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+
+  shareLink ShareLink @relation(fields: [shareLinkId], references: [id], onDelete: Cascade)
+  requester User     @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+
+  @@index([shareLinkId])
+  @@index([requesterId, status])
+  @@index([shareLinkId, requesterId, status])
+  @@index([shareLinkId, status])
+}
+
+model Notification {
+  id        String           @id
+  userId    String
+  type      NotificationType
+  metadata  Json
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, type])
+}

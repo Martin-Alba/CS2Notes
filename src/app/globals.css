@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-noto-sans);
+  --font-heading: var(--font-oswald);
+
+  --color-cs2-orange: #ff8800;
+  --color-cs2-amber: #ffaa33;
+  --color-cs2-red: #ff4444;
+  --color-cs2-blue: #4488ff;
+  --color-cs2-green: #44cc88;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #0a0a0a;
+  --foreground: #e5e5e5;
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-noto-sans), Arial, Helvetica, sans-serif;
+  position: relative;
+}
+
+::selection {
+  background-color: rgba(255, 136, 0, 0.3);
+  color: #fff;
+}
+
+@layer utilities {
+  .glass {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+  }
+  .glass-hover:hover {
+    background-color: rgba(255, 255, 255, 0.10);
+    border-color: rgba(255, 136, 0, 0.25);
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35), 0 0 24px rgba(255, 136, 0, 0.10);
+  }
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .glass-card:hover {
+    border-color: rgba(255, 136, 0, 0.25);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), 0 0 32px rgba(255, 136, 0, 0.12);
+  }
+  .glass-input {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .glass-input:focus {
+    border-color: rgba(255, 136, 0, 0.35);
+    box-shadow: 0 0 0 3px rgba(255, 136, 0, 0.12);
+    outline: none;
+  }
+  .glass-btn {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition: all 0.2s;
+  }
+  .glass-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 136, 0, 0.25);
+  }
+  .glow-orange {
+    box-shadow: 0 0 16px rgba(255, 136, 0, 0.3);
+  }
+  .glow-orange:hover {
+    box-shadow: 0 0 24px rgba(255, 136, 0, 0.4);
+  }
+  .glow-red {
+    box-shadow: 0 0 16px rgba(255, 68, 68, 0.3);
+  }
+  .glow-red:hover {
+    box-shadow: 0 0 24px rgba(255, 68, 68, 0.4);
+  }
+  .glow-green {
+    box-shadow: 0 0 16px rgba(68, 204, 136, 0.3);
+  }
+  .glow-green:hover {
+    box-shadow: 0 0 24px rgba(68, 204, 136, 0.4);
+  }
+  .text-neon {
+    text-shadow: 0 0 8px currentColor;
+  }
+}
+
+@keyframes float-orb {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}
+
+@keyframes float-orb-slow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.1); }
 }
