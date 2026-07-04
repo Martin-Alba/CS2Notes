@@ -14,12 +14,12 @@ function LocaleSwitch() {
   const tCommon = useTranslations("common");
   const locale = useLocale();
   const pathname = usePathname();
-  const router = useRouter();
 
   const switchLocale = (newLocale: string) => {
     if (newLocale === locale) return;
-    const path = pathname.replace(/^\/[a-z]{2}/, "") || "/";
-    router.replace(newLocale === "en" ? path : `/${newLocale}${path}`);
+    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000;SameSite=Lax`;
+    const path = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, "") || "/";
+    window.location.href = newLocale === "en" ? path : `/${newLocale}${path}`;
   };
 
   return (
