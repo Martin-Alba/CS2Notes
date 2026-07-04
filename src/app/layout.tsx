@@ -20,6 +20,10 @@ export const metadata: Metadata = {
     template: "%s - CS2 Notes",
   },
   description: "Track every round, improve your game.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({
