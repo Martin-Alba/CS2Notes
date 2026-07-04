@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   description: "Track every round, improve your game.",
   icons: {
-    icon: "/icon.png",
-    apple: "/icon.png",
+    icon: "/favicon.png",
+    apple: "/favicon.png",
   },
 };
 
